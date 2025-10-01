@@ -4,7 +4,7 @@ Example of constrained execution of arbitrary workloads in Python.
 
 <!-- mdformat-toc start --slug=github --no-anchors --maxlevel=6 --minlevel=1 -->
 
-- [Execution Handler](#project-name)
+- [Execution Handler](#execution-handler)
   - [Getting Started](#getting-started)
     - [Prerequisites](#prerequisites)
     - [Quick Start](#quick-start)

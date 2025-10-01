@@ -5,6 +5,12 @@
     # keep-sorted start
     keep-sorted.enable = true;
     nixfmt.enable = true;
+    ruff = {
+      enable = true;
+      format = true;
+      check = true;
+      statix.enable = true;
+    };
     # keep-sorted end
 
     mdformat = {
