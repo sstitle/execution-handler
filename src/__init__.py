@@ -1,9 +1,15 @@
-"""Execution handler package."""
+"""Execution Handler - Memory-constrained function execution utility."""
 
-from .logger import Logger, logger
-from .singleton import SingletonMeta, Singleton
-from .execution_handler import ExecutionHandler
-from .memory_handler import MemoryConstrainedExecutionHandler
+# Infrastructure
+from .infrastructure import Logger, logger, SingletonMeta, Singleton
+
+# Application layer
+from .application import ExecutionHandler
+
+# Core domain logic
+from .core import MemoryConstrainedExecutionHandler
+
+# Ports (interfaces)
 from .ports import (
     MemoryEstimatorPort,
     MemoryMonitorPort,
@@ -11,6 +17,8 @@ from .ports import (
     ExecutionDecisionPort,
     MemoryInfo,
 )
+
+# Adapters (implementations)
 from .adapters import (
     PsutilMemoryMonitorAdapter,
     SafetyMarginMemoryPolicyAdapter,
@@ -20,13 +28,15 @@ from .adapters import (
     FixedMemoryEstimatorAdapter,
     CustomMemoryEstimatorAdapter,
 )
-from .memory_estimators import (
+
+# Core utilities
+from .core.memory_estimators import (
     FileSizeMemoryEstimator,
     DataSizeMemoryEstimator,
     ListSizeMemoryEstimator,
     CustomMemoryEstimator,
 )
-from .example_functions import (
+from .core.example_functions import (
     read_file_to_string,
     process_large_list,
     create_large_string,

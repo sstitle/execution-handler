@@ -45,6 +45,9 @@
                 python3
               ];
 
+              # Enable testing during build
+              doCheck = true;
+
               buildPhase = ''
                 # Set up uv environment for Nix build
                 export UV_CACHE_DIR=$TMPDIR/uv-cache
@@ -63,22 +66,48 @@
                 uv pip install --system --target $out/lib/python3.13/site-packages -r <(uv export --format requirements-txt --no-hashes)
               '';
 
+              checkPhase = ''
+                # Set up environment for tests
+                export PYTHONPATH=$out/lib/python3.13/site-packages:$PWD:$PYTHONPATH
+                export UV_CACHE_DIR=$TMPDIR/uv-cache
+                export UV_DATA_DIR=$TMPDIR/uv-data
+                export HOME=$TMPDIR/home
+
+                # Run tests with pytest
+                ${pkgs.python3}/bin/python -m pytest tests/ -v --tb=short
+              '';
+
               installPhase = ''
                 mkdir -p $out/bin
 
                 # Copy the entire project structure
                 cp -r . $out/
 
-                # Create a wrapper script that runs the Python script directly
+                # Create a wrapper script that runs the main Python script
                 cat > $out/bin/execution-handler << EOF
                 #!${pkgs.bash}/bin/bash
                 cd $out
                 export PYTHONPATH=$out/lib/python3.13/site-packages:\$PYTHONPATH
-                exec ${pkgs.python3}/bin/python main.py "\$@"
+                exec ${pkgs.python3}/bin/python execution_handler.py "\$@"
                 EOF
                 chmod +x $out/bin/execution-handler
+
+                # Also provide direct access to the Python module
+                cat > $out/bin/execution-handler-main << EOF
+                #!${pkgs.bash}/bin/bash
+                cd $out
+                export PYTHONPATH=$out/lib/python3.13/site-packages:\$PYTHONPATH
+                exec ${pkgs.python3}/bin/python -m src "\$@"
+                EOF
+                chmod +x $out/bin/execution-handler-main
               '';
             };
+          };
+
+          # Make the package runnable with `nix run`
+          apps.default = {
+            type = "app";
+            program = "${self.packages.${system}.default}/bin/execution-handler";
           };
 
           # Development shell with nickel and mask

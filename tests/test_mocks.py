@@ -1,5 +1,5 @@
 from typing import List
-from .ports import (
+from src.ports import (
     MemoryMonitorPort,
     MemoryEstimatorPort,
     MemoryPolicyPort,

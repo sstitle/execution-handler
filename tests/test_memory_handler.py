@@ -1,7 +1,7 @@
 import pytest
 from unittest.mock import Mock
-from src.memory_handler import MemoryConstrainedExecutionHandler
-from src.test_mocks import (
+from src.core.memory_handler import MemoryConstrainedExecutionHandler
+from tests.test_mocks import (
     MockMemoryMonitor,
     MockMemoryEstimator,
     MockMemoryPolicy,

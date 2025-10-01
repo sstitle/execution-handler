@@ -1,12 +1,12 @@
 import psutil
-from .ports import (
+from ..ports import (
     MemoryMonitorPort,
     MemoryEstimatorPort,
     MemoryPolicyPort,
     ExecutionDecisionPort,
     MemoryInfo,
 )
-from .logger import logger
+from ..infrastructure.logger import logger
 
 
 class PsutilMemoryMonitorAdapter(MemoryMonitorPort):

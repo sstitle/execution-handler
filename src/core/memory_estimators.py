@@ -1,5 +1,5 @@
 import os
-from .ports import MemoryEstimatorPort
+from ..ports import MemoryEstimatorPort
 
 
 class FileSizeMemoryEstimator(MemoryEstimatorPort):

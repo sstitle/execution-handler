@@ -1,7 +1,7 @@
 import os
 import time
 from typing import List, Any
-from .logger import logger
+from ..infrastructure.logger import logger
 
 
 def read_file_to_string(file_path: str) -> str:

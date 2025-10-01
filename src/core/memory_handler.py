@@ -1,6 +1,6 @@
 from typing import Callable, Any, Optional
-from .execution_handler import ExecutionHandler
-from .ports import (
+from ..application.execution_handler import ExecutionHandler
+from ..ports import (
     MemoryMonitorPort,
     MemoryEstimatorPort,
     MemoryPolicyPort,
@@ -36,21 +36,21 @@ class MemoryConstrainedExecutionHandler(ExecutionHandler):
 
         # Use dependency injection with defaults
         if memory_monitor is None:
-            from .adapters import PsutilMemoryMonitorAdapter
+            from ..adapters import PsutilMemoryMonitorAdapter
 
             self.memory_monitor = PsutilMemoryMonitorAdapter()
         else:
             self.memory_monitor = memory_monitor
 
         if memory_policy is None:
-            from .adapters import SafetyMarginMemoryPolicyAdapter
+            from ..adapters import SafetyMarginMemoryPolicyAdapter
 
             self.memory_policy = SafetyMarginMemoryPolicyAdapter()
         else:
             self.memory_policy = memory_policy
 
         if execution_decision is None:
-            from .adapters import LoggerExecutionDecisionAdapter
+            from ..adapters import LoggerExecutionDecisionAdapter
 
             self.execution_decision = LoggerExecutionDecisionAdapter()
         else:
