@@ -30,6 +30,54 @@
           treefmtEval = inputs.treefmt-nix.lib.evalModule pkgs ./treefmt.nix;
         in
         {
+          packages = {
+            default = pkgs.stdenv.mkDerivation {
+              pname = "execution-handler";
+              version = "0.1.0";
+              
+              src = ./.;
+              
+              buildInputs = with pkgs; [
+                uv
+                python3
+              ];
+              
+              buildPhase = ''
+                # Set up uv environment for Nix build
+                export UV_CACHE_DIR=$TMPDIR/uv-cache
+                export UV_DATA_DIR=$TMPDIR/uv-data
+                export UV_COMPILE_BYTECODE=1
+                export UV_LINK_MODE=copy
+                export UV_NO_SYNC=1
+                export HOME=$TMPDIR/home
+                
+                # Create directories for uv data
+                mkdir -p $UV_CACHE_DIR
+                mkdir -p $UV_DATA_DIR
+                mkdir -p $HOME/.local/share/uv
+                
+                # Install dependencies directly without creating a venv
+                uv pip install --system --target $out/lib/python3.13/site-packages -r <(uv export --format requirements-txt --no-hashes)
+              '';
+              
+              installPhase = ''
+                mkdir -p $out/bin
+                
+                # Copy the entire project structure
+                cp -r . $out/
+                
+                # Create a wrapper script that runs the Python script directly
+                cat > $out/bin/execution-handler << 'EOF'
+                #!${pkgs.bash}/bin/bash
+                cd $out
+                export PYTHONPATH=$out/lib/python3.13/site-packages:$PYTHONPATH
+                exec ${pkgs.python3}/bin/python main.py "$@"
+                EOF
+                chmod +x $out/bin/execution-handler
+              '';
+            };
+          };
+          
           # Development shell with nickel and mask
           devShells.default = pkgs.mkShell {
             buildInputs = with pkgs; [
