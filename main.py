@@ -1,4 +1,4 @@
-import click
+import asyncclick as click
 from typing import Callable, Any
 from mpire import WorkerPool
 from src import logger
@@ -54,7 +54,7 @@ def cpu_intensive_task(n: int) -> int:
     default=4,
     help="Number of worker processes to use.",
 )
-def main(n_workers: int):
+async def main(n_workers: int):
     """Entry point for execution-handler - runs functions in worker processes."""
     logger.info(f"Hello from execution-handler! Using {n_workers} worker processes")
 
