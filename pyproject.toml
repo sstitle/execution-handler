@@ -8,4 +8,6 @@ dependencies = [
     "asyncclick>=8.1.7",
     "coloredlogs>=15.0.1",
     "mpire>=2.9",
+    "psutil>=6.1.0",
+    "pytest>=8.4.2",
 ]
