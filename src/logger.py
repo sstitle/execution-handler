@@ -2,6 +2,7 @@ import logging
 import coloredlogs
 from .singleton import SingletonMeta
 
+
 class Logger(metaclass=SingletonMeta):
     """Thread-safe singleton logger with colored output."""
 
@@ -68,5 +69,6 @@ class Logger(metaclass=SingletonMeta):
     def critical(self, message: str) -> None:
         """Log a critical message."""
         self._logger.critical(message)
+
 
 logger = Logger()
