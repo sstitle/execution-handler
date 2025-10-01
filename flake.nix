@@ -36,6 +36,7 @@
               version = "0.1.0";
               
               src = ./.;
+              name = "execution-handler-${pkgs.lib.substring 0 8 (builtins.hashString "sha256" (builtins.readFile ./pyproject.toml))}";
               
               buildInputs = with pkgs; [
                 uv
@@ -67,11 +68,11 @@
                 cp -r . $out/
                 
                 # Create a wrapper script that runs the Python script directly
-                cat > $out/bin/execution-handler << 'EOF'
+                cat > $out/bin/execution-handler << EOF
                 #!${pkgs.bash}/bin/bash
                 cd $out
-                export PYTHONPATH=$out/lib/python3.13/site-packages:$PYTHONPATH
-                exec ${pkgs.python3}/bin/python main.py "$@"
+                export PYTHONPATH=$out/lib/python3.13/site-packages:\$PYTHONPATH
+                exec ${pkgs.python3}/bin/python main.py "\$@"
                 EOF
                 chmod +x $out/bin/execution-handler
               '';
