@@ -1,6 +1,6 @@
 """Execution handler package."""
 
-from .logger import Logger
+from .logger import Logger, logger
 from .singleton import SingletonMeta, Singleton
 
-__all__ = ["Logger", "SingletonMeta", "Singleton"]
+__all__ = ["Logger", "logger", "SingletonMeta", "Singleton"]
